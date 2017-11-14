@@ -239,30 +239,30 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
         boolean = pIUtil->m_shiftStrW(utilMemStrW, 1, 3, 1, 0);
         if (boolean != BOOL_TRUE)
             THROW(1);
-        if (!pIUtil->m_findSubStrFirstW(MatterW, utilMemStrW))
+        if (!pIUtil->m_findSubStrFirstW(utilMemStrW, MatterW))
             THROW(1);
-        if (pIUtil->m_findSubStrFirstW(MattarW, utilMemStrW))
+        if (pIUtil->m_findSubStrFirstW(utilMemStrW, MattarW))
             THROW(1);
         boolean = pIUtil->m_shiftStrW(utilMemStrW, 1, 1, 3, 1);
         if (boolean != BOOL_TRUE)
             THROW(1);
-        if (!pIUtil->m_findSubStrFirstW(MattarW, utilMemStrW))
+        if (!pIUtil->m_findSubStrFirstW(utilMemStrW, MattarW))
             THROW(1);
-        if (pIUtil->m_findSubStrFirstW(MatterW, utilMemStrW))
+        if (pIUtil->m_findSubStrFirstW(utilMemStrW, MatterW))
             THROW(1);
         boolean = pIUtil->m_shiftStrA(utilMemStrA, 1, 3, 1, 0);
         if (boolean != BOOL_TRUE)
             THROW(1);
-        if (!pIUtil->m_findSubStrFirstA(MatterA, utilMemStrA))
+        if (!pIUtil->m_findSubStrFirstA(utilMemStrA, MatterA))
             THROW(1);
-        if (pIUtil->m_findSubStrFirstA(MattarA, utilMemStrA))
+        if (pIUtil->m_findSubStrFirstA(utilMemStrA, MattarA))
             THROW(1);
         boolean = pIUtil->m_shiftStrA(utilMemStrA, 1, 1, 3, 1);
         if (boolean != BOOL_TRUE)
             THROW(1);
-        if (!pIUtil->m_findSubStrFirstA(MattarA, utilMemStrA))
+        if (!pIUtil->m_findSubStrFirstA(utilMemStrA, MattarA))
             THROW(1);
-        if (pIUtil->m_findSubStrFirstA(MatterA, utilMemStrA))
+        if (pIUtil->m_findSubStrFirstA(utilMemStrA, MatterA))
             THROW(1);
 
         utilMemStrW[0] = 0;
