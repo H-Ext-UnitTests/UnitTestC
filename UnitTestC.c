@@ -637,6 +637,10 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
         if (!pICommand->m_alias_add(eaoTestExecuteStr, eaoTestExecuteAliasStr))
             THROW(4);
 
+        // Proper remove command when done testing.
+        if (!pICommand->m_delete(hash, eao_testExecute, eaoTestExecuteStr))
+            THROW(4);
+
         if (!pICommand->m_reload_level(hash))
             THROW(4);
         if (!pICommand->m_load_from_file(hash, eaoLoadFileStr, plINull, MP_RCON))
@@ -962,7 +966,7 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
          * m_dispatch_player
          */
         chatData d;
-        d.msg_ptr = (wchar_t*)playerChatTest;
+        d.msg_ptr = playerChatTest;
         d.player = 0;
         d.type = CHAT_TEAM;
         // Gotta pass a pointer to the chatData struct
@@ -979,7 +983,7 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
         /*
          * m_dispatch_global
          */
-        d.msg_ptr = (wchar_t*)globalChatTest;
+        d.msg_ptr = globalChatTest;
         d.type = CHAT_GLOBAL;
         d_ptr = (DWORD)&d;
         packetBuffer = malloc(4096 + 2 * ARRAYSIZE(globalChatTest));
@@ -1107,7 +1111,7 @@ dllAPI void WINAPIC EXTOnEAOUnload() {
 }
 
 #ifdef EXT_HKTIMER
-dllAPI void WINAPIC EXTOnTimerExecute(unsigned int id) {
+dllAPI bool WINAPIC EXTOnTimerExecute(unsigned int id, unsigned int count) {
 #ifdef ITIMER_LOOP_CHECK
     if (TimerIDLoop == id) {
         DWORD tempTimerTickLoop = GetTickCount();
@@ -1115,7 +1119,7 @@ dllAPI void WINAPIC EXTOnTimerExecute(unsigned int id) {
         VARIANTulong(&var, tempTimerTickLoop - TimerTickLoop);
         TimerTickLoop = tempTimerTickLoop;
         pIPlayer->m_send_custom_message(MF_INFO, MP_RCON, &plINull, L"{0:d} millisecond(s).", 1, &var);
-        TimerIDLoop = pITimer->m_add(EAOhashID, 0, 30); //1 second
+        return 1; //This is needed to "mock up" else to avoid force failure below and tell H-Ext to repeat timer.
     } else
 #endif
     if (TimerID[0] == id) {
@@ -1155,6 +1159,7 @@ dllAPI void WINAPIC EXTOnTimerExecute(unsigned int id) {
         failedITimer:
         MessageBoxW(NULL, L"ITimer API has failed unit test.", L"ERROR - ITimer", MB_OK | MB_ICONERROR);
     }
+    return 0; //Tell H-Ext not to repeat timer.
 }
 dllAPI void WINAPIC EXTOnTimerCancel(unsigned int id) {
     if (TimerID[0] == id) {
