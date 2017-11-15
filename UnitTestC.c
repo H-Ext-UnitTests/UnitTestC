@@ -715,11 +715,11 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
             THROW(6);
 
         PlayerInfo plITest = { 0 }, plITest2 = { 0 };
-        if (pIPlayer->m_get_m_index(2, &plITest))
+        if (pIPlayer->m_get_m_index(2, &plITest, 1))
             THROW(6);
-        if (pIPlayer->m_get_m_index(1, &plITest))
+        if (pIPlayer->m_get_m_index(1, &plITest, 1))
             THROW(6);
-        if (!pIPlayer->m_get_m_index(0, &plITest))
+        if (!pIPlayer->m_get_m_index(0, &plITest, 1))
             THROW(6);
         if (pIPlayer->m_get_id(200, &plITest2))
             THROW(6);
@@ -838,7 +838,7 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
         if (!pIPlayer)
             THROW(6);
         PlayerInfo plIMockUp;
-        if (!pIPlayer->m_get_m_index(0, &plIMockUp))
+        if (!pIPlayer->m_get_m_index(0, &plIMockUp, 1))
             THROW(6);
 
         pIAdmin = getIAdmin(hash);
