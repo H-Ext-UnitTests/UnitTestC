@@ -637,13 +637,13 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
         if (!pICommand->m_alias_add(eaoTestExecuteStr, eaoTestExecuteAliasStr))
             THROW(4);
 
-        // Proper remove command when done testing.
-        if (!pICommand->m_delete(hash, eao_testExecute, eaoTestExecuteStr))
-            THROW(4);
-
         if (!pICommand->m_reload_level(hash))
             THROW(4);
         if (!pICommand->m_load_from_file(hash, eaoLoadFileStr, plINull, MP_RCON))
+            THROW(4);
+
+        // Proper remove command when done testing.
+        if (!pICommand->m_delete(hash, eao_testExecute, eaoTestExecuteStr))
             THROW(4);
 
         MessageBoxW(NULL, L"ICommand API has passed unit test.", L"PASSED - ICommand", MB_OK | MB_ICONINFORMATION);
