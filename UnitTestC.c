@@ -76,8 +76,8 @@ IUtil* pIUtil = 0;
 #ifdef EXT_ITIMER
 ITimer* pITimer = 0;
 UINT TimerID[4] = { 0 };
-DWORD TimerTickStart = 0;
-DWORD TimerTickSys[4] = { 0 };
+LONGLONG TimerTickStart = 0;
+LONGLONG TimerTickSys[4] = { 0 };
 #ifdef ITIMER_LOOP_CHECK
 UINT TimerIDLoop = 0;
 DWORD TimerTickLoop = 0;
@@ -129,6 +129,19 @@ bool compareString(const wchar_t* str1, const wchar_t* str2, unsigned int length
     return 1;
 }
 
+BOOL s_use_qpc = FALSE;
+LARGE_INTEGER s_frequency;
+long long milliseconds_now() {
+    if (s_use_qpc) {
+        LARGE_INTEGER now;
+        QueryPerformanceCounter(&now);
+        return (1000LL * now.QuadPart) / s_frequency.QuadPart;
+    } else {
+        return GetTickCount();
+    }
+}
+
+
 dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
     EAOhashID = hash;
     wchar_t testStrW[0x30] = L"Master \\\\Chief `love` 'biofoam' \\canister.";
@@ -136,6 +149,7 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
     e_boolean boolean;
     unsigned int retCode;
     wchar_t* strPtrW = NULL;
+    s_use_qpc = QueryPerformanceFrequency(&s_frequency);
     TRY {
 #ifdef EXT_IUTIL
         pIUtil = getIUtil(hash);
@@ -1138,7 +1152,7 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
         pITimer->m_delete(hash, TimerID[1]);
 #ifdef ITIMER_LOOP_CHECK
         TimerIDLoop = pITimer->m_add(hash, 0, 30);
-        TimerTickLoop = GetTickCount();
+        TimerTickLoop = milliseconds_now();
 #endif
 #endif
     } CATCH(1) {
@@ -1185,7 +1199,7 @@ dllAPI void WINAPIC EXTOnEAOUnload() {
 dllAPI bool WINAPIC EXTOnTimerExecute(unsigned int id, unsigned int count) {
 #ifdef ITIMER_LOOP_CHECK
     if (TimerIDLoop == id) {
-        DWORD tempTimerTickLoop = GetTickCount();
+        DWORD tempTimerTickLoop = milliseconds_now();
         VARIANT var = { 0 };
         VARIANTulong(&var, tempTimerTickLoop - TimerTickLoop);
         TimerTickLoop = tempTimerTickLoop;
@@ -1195,7 +1209,7 @@ dllAPI bool WINAPIC EXTOnTimerExecute(unsigned int id, unsigned int count) {
 #endif
     if (TimerID[0] == id) {
         if (!TimerTickStart) {
-            TimerTickStart = GetTickCount();
+            TimerTickStart = milliseconds_now();
             TimerID[0] = pITimer->m_add(EAOhashID, 0, 150); //5 seconds
             if (!TimerID[0])
                 goto failedITimer;
@@ -1203,8 +1217,8 @@ dllAPI bool WINAPIC EXTOnTimerExecute(unsigned int id, unsigned int count) {
             if (!TimerID[2])
                 goto failedITimer;
         } else {
-            TimerTickSys[0] = GetTickCount();
-            DWORD tmpTimerCheck = TimerTickSys[0] - TimerTickStart;
+            TimerTickSys[0] = milliseconds_now();
+            LONGLONG tmpTimerCheck = TimerTickSys[0] - TimerTickStart;
             if (!(4500 < tmpTimerCheck && tmpTimerCheck < 5033))
                 goto failedITimer;
             if (TimerTickSys[1] != 0)
@@ -1218,14 +1232,14 @@ dllAPI bool WINAPIC EXTOnTimerExecute(unsigned int id, unsigned int count) {
             MessageBoxW(NULL, L"ITimer API has passed unit test.", L"PASSED - ITimer", MB_OK | MB_ICONINFORMATION);
         }
     } else if (TimerID[1] == id) {
-        TimerTickSys[1] = GetTickCount();
+        TimerTickSys[1] = milliseconds_now();
     } else if (TimerID[2] == id) {
-        TimerTickSys[2] = GetTickCount();
+        TimerTickSys[2] = milliseconds_now();
         TimerID[3] = pITimer->m_add(EAOhashID, 0, 60); //2 seconds
         if (!TimerID[3])
             goto failedITimer;
     } else if (TimerID[3] == id) {
-        TimerTickSys[3] = GetTickCount();
+        TimerTickSys[3] = milliseconds_now();
     } else {
         failedITimer:
         MessageBoxW(NULL, L"ITimer API has failed unit test.", L"ERROR - ITimer", MB_OK | MB_ICONERROR);
