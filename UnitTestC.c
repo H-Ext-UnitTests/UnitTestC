@@ -111,6 +111,24 @@ IAdmin* pIAdmin = 0;
 IHaloEngine* pIHaloEngine = 0;
 #endif
 
+bool compareString(const wchar_t* str1, const wchar_t* str2, unsigned int length) {
+    if (length == -1) {
+        length = 0;
+        while(str1[length] != 0 && str2[length] != 0) {
+            if (str1[length] != str2[length])
+                return 0;
+            length++;
+        }
+    } else {
+        do {
+            length--;
+            if (str1[length] != str2[length])
+                return 0;
+        } while (length);
+    }
+    return 1;
+}
+
 dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
     EAOhashID = hash;
     wchar_t testStrW[0x30] = L"Master \\\\Chief `love` 'biofoam' \\canister.";
@@ -481,26 +499,26 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
         if (CALL_MEMBER_FN(pICInifile, m_section_exist, EXTPluginInfo.sectors.sect_name5))
             THROW(3);
 
-        if (CALL_MEMBER_FN(pICInifile, m_key_exist, str1_0, EXTPluginInfo.sectors.sect_name1))
+        if (CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name1, str1_0))
             THROW(3);
-        if (CALL_MEMBER_FN(pICInifile, m_key_exist, str1_1, EXTPluginInfo.sectors.sect_name2))
+        if (CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name2, str1_1))
             THROW(3);
-        if (CALL_MEMBER_FN(pICInifile, m_key_exist, str1_0, EXTPluginInfo.sectors.sect_name3))
+        if (CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name3, str1_0))
             THROW(3);
-        if (CALL_MEMBER_FN(pICInifile, m_key_exist, str1_2, EXTPluginInfo.sectors.sect_name4))
+        if (CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name4, str1_2))
             THROW(3);
-        if (CALL_MEMBER_FN(pICInifile, m_key_exist, str1_3, EXTPluginInfo.sectors.sect_name5))
+        if (CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name5, str1_3))
             THROW(3);
 
-        if (!CALL_MEMBER_FN(pICInifile, m_value_set, str1_0, firstUnitTestCStr, EXTPluginInfo.sectors.sect_name1))
+        if (!CALL_MEMBER_FN(pICInifile, m_value_set, EXTPluginInfo.sectors.sect_name1, str1_0, firstUnitTestCStr))
             THROW(3);
-        if (!CALL_MEMBER_FN(pICInifile, m_value_set, str1_1, firstUnitTestCStr, EXTPluginInfo.sectors.sect_name2))
+        if (!CALL_MEMBER_FN(pICInifile, m_value_set, EXTPluginInfo.sectors.sect_name2, str1_1, firstUnitTestCStr))
             THROW(3);
-        if (!CALL_MEMBER_FN(pICInifile, m_value_set, str1_0, firstUnitTestCStr, EXTPluginInfo.sectors.sect_name3))
+        if (!CALL_MEMBER_FN(pICInifile, m_value_set, EXTPluginInfo.sectors.sect_name3, str1_0, firstUnitTestCStr))
             THROW(3);
-        if (CALL_MEMBER_FN(pICInifile, m_value_set, str1_2, firstUnitTestCStr, EXTPluginInfo.sectors.sect_name4))
+        if (CALL_MEMBER_FN(pICInifile, m_value_set, EXTPluginInfo.sectors.sect_name4, str1_2, firstUnitTestCStr))
             THROW(3);
-        if (CALL_MEMBER_FN(pICInifile, m_value_set, str1_3, firstUnitTestCStr, EXTPluginInfo.sectors.sect_name5))
+        if (CALL_MEMBER_FN(pICInifile, m_value_set, EXTPluginInfo.sectors.sect_name5, str1_3, firstUnitTestCStr))
             THROW(3);
         retCode++;
         switch (retCode) {
@@ -546,36 +564,36 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
             THROW(3);
 
 
-        if (!CALL_MEMBER_FN(pICInifile, m_key_exist, str1_0, EXTPluginInfo.sectors.sect_name1))
+        if (!CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name1, str1_0))
             THROW(3);
 
-        if (!CALL_MEMBER_FN(pICInifile, m_key_exist, str1_1, EXTPluginInfo.sectors.sect_name2))
+        if (!CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name2, str1_1))
             THROW(3);
-        if (CALL_MEMBER_FN(pICInifile, m_key_exist, str1_0, EXTPluginInfo.sectors.sect_name3))
+        if (CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name3, str1_0))
             THROW(3);
-        if (CALL_MEMBER_FN(pICInifile, m_key_exist, str1_2, EXTPluginInfo.sectors.sect_name4))
+        if (CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name4, str1_2))
             THROW(3);
-        if (CALL_MEMBER_FN(pICInifile, m_key_exist, str1_3, EXTPluginInfo.sectors.sect_name5))
+        if (CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name5, str1_3))
             THROW(3);
 
 
-        if (!CALL_MEMBER_FN(pICInifile, m_value_set, str1_0, firstUnitTestCStr, EXTPluginInfo.sectors.sect_name1))
+        if (!CALL_MEMBER_FN(pICInifile, m_value_set, EXTPluginInfo.sectors.sect_name1, str1_0, firstUnitTestCStr))
             THROW(3);
-        if (!CALL_MEMBER_FN(pICInifile, m_key_exist, str1_0, EXTPluginInfo.sectors.sect_name1))
+        if (!CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name1, str1_0))
             THROW(3);
 
         if (!CALL_MEMBER_FN(pICInifile, m_save))
             THROW(3);
 
-        if (!CALL_MEMBER_FN(pICInifile, m_key_delete, str1_0, EXTPluginInfo.sectors.sect_name1))
+        if (!CALL_MEMBER_FN(pICInifile, m_key_delete, EXTPluginInfo.sectors.sect_name1, str1_0))
             THROW(3);
-        if (CALL_MEMBER_FN(pICInifile, m_key_exist, str1_0, EXTPluginInfo.sectors.sect_name1))
+        if (CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name1, str1_0))
             THROW(3);
 
         if (!CALL_MEMBER_FN(pICInifile, m_load))
             THROW(3);
 
-        if (!CALL_MEMBER_FN(pICInifile, m_key_exist, str1_0, EXTPluginInfo.sectors.sect_name1))
+        if (!CALL_MEMBER_FN(pICInifile, m_key_exist, EXTPluginInfo.sectors.sect_name1, str1_0))
             THROW(3);
 
         retCode = 0;
@@ -587,13 +605,69 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
         if ((ARRAYSIZE(iniFileDataStr) - 1) != retCode)
             THROW(3);
         retCode++;
-        do {
-            retCode--;
-            if (strPtrW[retCode] != iniFileDataStr[retCode])
-                THROW(3);
-        } while (retCode);
+
+        if (!compareString(strPtrW, iniFileDataStr, retCode))
+            THROW(3);
+
+        // Begin 0.5.3.4 Feature
+        wchar_t section_name[INIFILESECTIONMAX];
+        wchar_t key_name[INIFILEKEYMAX];
+        wchar_t value_name[INIFILEVALUEMAX];
+        unsigned int ini_sec_count = CALL_MEMBER_FN(pICInifile, m_section_count);
+        if (ini_sec_count != 3)
+            THROW(3);
+
+        unsigned int ini_key_count;
+        // Section 0 test
+        if (!CALL_MEMBER_FN(pICInifile, m_section_index, 0, section_name))
+            THROW(3);
+        if (!compareString(EXTPluginInfo.sectors.sect_name1, section_name, -1))
+            THROW(3);
+        ini_key_count = CALL_MEMBER_FN(pICInifile, m_key_count, section_name);
+        if (ini_key_count != 1)
+            THROW(3);
+
+        // Section 0 key 0 test
+        if (!CALL_MEMBER_FN(pICInifile, m_key_index, section_name, 0, key_name, value_name))
+            THROW(3);
+        if (!compareString(str1_0, key_name, -1))
+            THROW(3);
+        if (!compareString(firstUnitTestCStr, value_name, -1))
+            THROW(3);
+
+        // Section 1 test
+        if (!CALL_MEMBER_FN(pICInifile, m_section_index, 1, section_name))
+            THROW(3);
+        if (!compareString(EXTPluginInfo.sectors.sect_name2, section_name, -1))
+            THROW(3);
+        ini_key_count = CALL_MEMBER_FN(pICInifile, m_key_count, section_name);
+        if (ini_key_count != 1)
+            THROW(3);
+
+        // Section 1 key 0 test
+        if (!CALL_MEMBER_FN(pICInifile, m_key_index, section_name, 0, key_name, value_name))
+            THROW(3);
+        if (!compareString(str1_1, key_name, -1))
+            THROW(3);
+        if (!compareString(firstUnitTestCStr, value_name, -1))
+            THROW(3);
+
+        // Section 2 test
+        if (!CALL_MEMBER_FN(pICInifile, m_section_index, 2, section_name))
+            THROW(3);
+        if (!compareString(EXTPluginInfo.sectors.sect_name3, section_name, -1))
+            THROW(3);
+        ini_key_count = CALL_MEMBER_FN(pICInifile, m_key_count, section_name);
+        if (ini_key_count != 0)
+            THROW(3);
+
+
+        // End 0.5.3.4 Feature
+
         if (!CALL_MEMBER_FN(pICInifile, m_delete_file, iniFileStr))
             THROW(3);
+
+        CALL_MEMBER_FN(pICInifile, m_release);
 
         MessageBoxW(NULL, L"ICIniFile API has passed unit test.", L"PASSED - ICIniFile", MB_OK | MB_ICONINFORMATION);
 
@@ -1104,10 +1178,7 @@ dllAPI EAO_RETURN WINAPIC EXTOnEAOLoad(UINT hash) {
 }
 
 dllAPI void WINAPIC EXTOnEAOUnload() {
-#ifdef EXT_ICINIFILE
-        if (pICInifile)
-            CALL_MEMBER_FN(pICInifile, m_release);
-#endif
+    //TODO: Need to test something here?
 }
 
 #ifdef EXT_HKTIMER
