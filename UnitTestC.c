@@ -14,8 +14,8 @@
 // List of EXTs API support for mp mode only
 
 //#define EXT_IHALOENGINE
-//#define EXT_IOBJECT
-//#define EXT_IPLAYER         // if define EXT_IADMIN, EXT_IPLAYER test will not process
+//#define EXT_IOBJECT         // Require EXT_IUTIL
+//#define EXT_IPLAYER         // Require EXT_IOBJECT; if define EXT_IADMIN, EXT_IPLAYER test will not process
 //#define EXT_IADMIN          // Require EXT_IUTIL
 
 // Not included in this UnitTest.
@@ -51,7 +51,7 @@ addon_info EXTPluginInfo = { L"Unit Test C", L"1.0.0.0",
 UINT EAOhashID = 0;
 
 /*
- * Verification list as of 0.5.3.3
+ * Verification list as of 0.5.3.4
  *
  * EXT_IHALOENGINE          - Passed (except a few functions are not included in test.)
  * EXT_IOBJECT              - Passed (except a few functions are not included in test.)
